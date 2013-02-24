@@ -191,10 +191,11 @@ class CApp extends CRoute {
     *@App     --- app name(sub item name)
     *return: db model instance
     */
-    public function LoadDbModel($table, $db=null, $subApp=null)
+    public function LoadDbModel($table, $db=null)
     {
         $id = 'dbmodel_'. $table. '_'. $db. '_';
-        if(isset($this->dbmodelArr[$id]) && is_resource($this->dbmodelArr[$id])){
+        // print_r($this->dbmodelArr[$id]);
+        if(isset($this->dbmodelArr[$id]) && is_object($this->dbmodelArr[$id])){
             //防止重复加载以提高效率
             return $this->dbmodelArr[$id];
         }
@@ -226,11 +227,11 @@ class CApp extends CRoute {
         if(is_file($tableLoc)) {
             require_once($tableLoc);
             if(class_exists($class, false)) {
-                return new $class;
+                return $this->dbmodelArr[$id] = new $class;
             }
         }else {
             // $model = new CDbModel($db, $table);
-            // return new CDbModel($db, $table);
+            // return $model;
         }
         
         $template = $model->createTemplate($class);
@@ -240,7 +241,7 @@ class CApp extends CRoute {
                 require_once($tableLoc);
                 if(class_exists($class, false)) {
                     // echo "($tableLoc)------($class)";
-                    return new $class;
+                    return $this->dbmodelArr[$id] = new $class;
                 }
             }
         }

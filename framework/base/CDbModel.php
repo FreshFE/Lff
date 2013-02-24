@@ -50,8 +50,9 @@ class CDbModel extends CModel {
                         $rst = $pdb->$method($this->table);
                     }
             }
-            if(!$rst) {
+            if(!isset($rst)) {
                 $this->error = $pdb->getError();
+                return null;
             }
             return $rst;
         }else {

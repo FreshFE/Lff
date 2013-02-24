@@ -239,7 +239,9 @@ abstract class CCtrl extends CEle {
         //echo $template;
         $viewDir  = dirname(Lff::$App->tplLoc).'/view/';
         $suff     = str_replace($viewDir, '', $this->vfile);
-        $template = dirname($suff) .'/'. basename($template).'.html';
+        $basename = basename($template);
+        $basename = $basename?$basename:'default';
+        $template = dirname($suff) .'/'. $basename.'.html';
         $smarty->display($template, $cache_id, $compile_id, $parent);
         exit;
     }
