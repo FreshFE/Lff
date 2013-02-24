@@ -45,4 +45,18 @@ class CSession {
     {
         session_destroy();
     }
+
+    function pushMessage($msg)
+    {
+        $_SESSION['___sessionMessage'] = $msg;
+    }
+    function flushMessage()
+    {
+        if(isset($_SESSION['___sessionMessage'])){
+            $msg = $_SESSION['___sessionMessage'];
+            unset($_SESSION['___sessionMessage']);
+            return $msg;
+        }
+        return null;
+    }
 };

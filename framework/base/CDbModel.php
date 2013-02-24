@@ -206,7 +206,8 @@ class CDbModel extends CModel {
         $template .= "    {\n";
         $template .= "        \$pdb = \$this->getDb(\$this->db);\n";
         $template .= "        if(!\$pdb) return false;\n";
-        $template .= "        return \$pdb->delete(\$this->table, \$this->cdtions);\n";
+        $template .= "        \$cdtions = \$this->getCdtions();\n";
+        $template .= "        return \$pdb->delete(\$this->table, \$cdtions);\n";
         $template .= "    }\n\n";
         
         //query one
@@ -230,6 +231,14 @@ class CDbModel extends CModel {
         $template .= "    {\n";
         $template .= "        return \$this->getOne(\$pArr);\n";
         $template .= "    }\n\n";
+
+        $template .= "    //其实就是get\n";
+        $template .= "    function count(\$pArr=null)\n";
+        $template .= "    {\n";
+        $template .= "        \$pArr['fields'] = 'count(*) _count';\n";
+        $template .= "        \$row = \$this->getOne(\$pArr);\n";
+        $template .= "        return \$row['_count'];\n";
+        $template .= "    }\n";
 
         //query list
         $template .= "    //同getList\n";
