@@ -220,6 +220,7 @@ class CDbModel extends CModel {
         $template .= "                \$pArr['fields'] = \$pdb->ftFields(\$pArr['fields'], \$this->typeArr);\n";
         $template .= "            }\n";
         $template .= "        }\n";
+        $template .= "        if(!isset(\$pArr['where'])) \$pArr['where'] = \$this->getCdtions();\n";
         $template .= "        return \$pdb->getOne(\$this->table, \$pArr);\n";
         $template .= "    }\n\n";
 

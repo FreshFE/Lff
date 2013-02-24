@@ -206,6 +206,7 @@ abstract class CCtrl extends CEle {
             $this->smarty->assign('IMG_URL',        Lff::$App->imgsUrl);
             $this->smarty->assign('JS_URL',         Lff::$App->jsexUrl);
             $this->smarty->assign('TPL_LOC',        Lff::$App->homeLoc.'/smarty');
+            $this->smarty->assign('TPL_HOME',       Lff::$App->homeLoc.'/smarty/templates');
             $this->smarty->assign('TPL_TEMP_LOC',   Lff::$App->homeLoc.'/smarty/templates');
             $this->smarty->assign('TPL_LAYOUT_LOC', Lff::$App->homeLoc.'/smarty/templates/layout');
             $this->smarty->assign('TPL_CACHE_LOC',  Lff::$App->homeLoc.'/smarty/cache');
