@@ -307,20 +307,56 @@ abstract class CRoute extends CEle {
         //end add on 20120927
         return $route;
     }
-    
+    /* 
+    * 如果url: ...com/d1/d2/ctrl/action
+    * return: d1/d2/
+    */
     function getRouteDir()
     {
         return $this->routedir;
     }
+    /* 
+    * 如果url: ...com/d1/d2/ctrl/action
+    * return: d1/d2/ctrl/action
+    */
+    function getPathId($safize=true)
+    {
+        $pathid = $this->route;
+        if($safize){
+            $pathid = str_replace('/', '_', $pathid);
+        }
+        return $pathid;
+    }
+    /* 
+    * 如果url: ...com/d1/d2/ctrl/action
+    * return: d1/d2/ctrl
+    */
+    function getRouteId($safize=true)
+    {
+        $rid = $this->getRouteDir() . $this->getCtrlId();
+        if($safize){
+            $rid = str_replace('/', '_', $rid);
+        }
+        return $rid;
+    }
+    /* 
+    * 如果url: ...com/d1/d2/ctrl/action
+    * return: ctrl
+    */
     function getCtrlId()
     {
         // $realRoute = str_replace($this->routedir, '', $this->route);
         $arr = explode('/', $this->route);
         return $arr[count($arr)-2];
     }
+    /* 
+    * 如果url: ...com/d1/d2/ctrl/action
+    * return: action
+    */
     function getActionId()
     {
-
+        $arr = explode('/', $this->route);
+        return $arr[count($arr)-1];
     }
     function get($key, $default=null)
     {
