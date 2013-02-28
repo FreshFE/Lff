@@ -435,7 +435,7 @@ abstract class CRoute extends CEle {
 
     /**
     * desc: 为每页面生成一个js文件(实际按控制器)
-    *
+    * 
     */
     public function makePagejs($jsname='', $ctrl=null)
     {
