@@ -409,19 +409,25 @@ class CPdb {
     /*
     * desc: 字段过滤
     * 
-    *@fields  --- string filed list
+    *@fields  --- string filed list("f1,f2" or "^f1")
     *@descArr --- array  table structure info
     *return: string of field list
     */
     public function ftFields($fields, $descArr)
     {
-        if(empty($fields) || empty($descArr)) {
+        if(empty($fields) || empty($descArr) || '*'==$fields) {
             return '*';
         }
-        $fds  = trim($fields);
-        if('*' != $fds) {
-            $fArr = explode(',', $fds);
-            $fieldArr = array_keys($descArr);
+        $fds      = trim($fields);
+        $fArr     = explode(',', ltrim($fds,'^'));
+        $fieldArr = array_keys($descArr);
+        if(0 === strpos($fds,'^')){ //过滤模式
+            $ignoreArr = $fArr;
+            foreach($ignoreArr as $k=>$f){
+                if(in_array($f, $fieldArr)) unset($fieldArr[$f]);
+            }
+            $fds = '`'.implode('`,`', $fieldArr).'`';
+        }else {
             foreach($fArr as $k=>&$f){
                 $matchs = preg_match("/[0-9a-z_]{2,}?\(.+\)/si", $f); //说明是mysql函数                
                 if($matchs > 0)continue;

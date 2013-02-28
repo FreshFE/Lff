@@ -4,7 +4,7 @@ class CSession {
 
     function start($sid=null)
     {
-        session_start();
+        if(!isset($_SESSION))session_start();
         // session_id();
     }
 
