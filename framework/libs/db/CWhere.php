@@ -106,7 +106,7 @@ class CWhere{
         $this->inst->cdtions .= " $op $f=$v";
         return $this->inst;
     }
-    public function lt($f, $v, $eq=false, $op='and')
+    private function _lt($f, $v, $eq=false, $op='and')
     {
         $rArr = array($f=>$v);
         $this->valueSafize($rArr,array('quot'=>true));
@@ -115,7 +115,15 @@ class CWhere{
         $this->inst->cdtions .= " $op $f<$_l$v";
         return $this->inst;
     }
-    public function gt($f,$v,$eq=false, $op='and')
+    public function lt($f, $v, $op='and')
+    {
+        return $this->_lt($f, $v, false, $op);
+    }
+    public function lte($f, $v, $op='and')
+    {
+        return $this->_lt($f, $v, true, $op);
+    }
+    private function _gt($f, $v, $eq=false, $op='and')
     {
         $rArr = array($f=>$v);
         $this->valueSafize($rArr,array('quot'=>true));
@@ -123,6 +131,14 @@ class CWhere{
         $_l = $eq?'=':'';
         $this->inst->cdtions .= " $op $f>$_l$v";
         return $this->inst;
+    }
+    public function gt($f, $v, $op='and')
+    {
+        return $this->_gt($f, $v, false, $op);
+    }
+    public function gte($f, $v, $op='and')
+    {
+        return $this->_gt($f, $v, true, $op);
     }
     public function in($f, $inArr, $op='and')
     {
@@ -168,13 +184,13 @@ class CWhere{
         return $this->inst;
     }
 
-    public function order($fields)
+    public function order()
     {
     }
-    public function group($fields)
+    public function group()
     {
     }
-    public function having($fields)
+    public function having()
     {
     }
 
