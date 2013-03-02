@@ -149,7 +149,7 @@ class CApp extends CRoute {
     public function LoadModel($modelId, $subApp=null)
     {
         $id = $modelId. '_'. $subApp;
-        if(isset($this->modelArr[$id]) && is_resource($this->modelArr[$id])){
+        if(isset($this->modelArr[$id]) && is_object($this->modelArr[$id])){
             //防止重复加载以提高效率
             return $this->modelArr[$id];
         }

@@ -99,7 +99,7 @@ class CPdb {
         $where  = empty($where)?'':" where {$where}";
         $order  = empty($order)?'':"order by {$order}";
         $having = empty($having)?'':"having by {$having}";
-        $sql    = "select {$fields} from {$table} {$where} {$order} {$having} limit {$start},{$limit}";
+        $sql    = "select {$fields} from {$table} {$where} {$order} {$group} {$having} limit {$start},{$limit}";
         return $sql;
     }
     public function getCount($sql)
@@ -415,10 +415,16 @@ class CPdb {
     */
     public function ftFields($fields, $descArr)
     {
+        $fds = trim($fields);
+        $distinct = null;
+        if(0 === strpos(strtolower($fds), 'distinct')){
+            $fds = str_replace('distinct ', '', $fds);
+            $distinct = 'distinct ';
+        }
         if(empty($fields) || empty($descArr) || '*'==$fields) {
             return '*';
         }
-        $fds      = trim($fields);
+        
         $fArr     = explode(',', ltrim($fds,'^'));
         $fieldArr = array_keys($descArr);
         if(0 === strpos($fds,'^')){ //过滤模式
@@ -443,7 +449,7 @@ class CPdb {
                 $fds = implode(',', $fArr);
             }
         }
-        return $fds;
+        return $distinct ? $distinct.$fds : $fds;
     }
     /*
     * desc: 获取上次执行sql语句
