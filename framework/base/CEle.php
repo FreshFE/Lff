@@ -76,8 +76,8 @@ abstract class CEle {
             return $html; 
         } 
         if (isset($protocol[0])) { 
-        $new_html = preg_replace('/href="\//', 'href="'.$protocol[0].$server_url.'/', $html); 
-        $new_html = preg_replace('/src="\//', 'src="'.$protocol[0].$server_url.'/', $new_html); 
+            $new_html = preg_replace('/href="\//', 'href="'.$protocol[0].$server_url.'/', $html); 
+            $new_html = preg_replace('/src="\//', 'src="'.$protocol[0].$server_url.'/', $new_html); 
         }else { 
             $new_html = $html; 
         }

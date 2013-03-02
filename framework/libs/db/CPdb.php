@@ -418,20 +418,22 @@ class CPdb {
         $fds = trim($fields);
         $distinct = null;
         if(0 === strpos(strtolower($fds), 'distinct')){
-            $fds = str_replace('distinct ', '', $fds);
+            $fds = str_ireplace('distinct ', '', $fds);
             $distinct = 'distinct ';
         }
         if(empty($fields) || empty($descArr) || '*'==$fields) {
             return '*';
         }
         
-        $fArr     = explode(',', ltrim($fds,'^'));
+        $fArr     = explode(',', trim($fds,'^'));
         $fieldArr = array_keys($descArr);
+        
         if(0 === strpos($fds,'^')){ //过滤模式
             $ignoreArr = $fArr;
-            foreach($ignoreArr as $k=>$f){
-                if(in_array($f, $fieldArr)) unset($fieldArr[$f]);
+            foreach($fieldArr as $k=>$f){
+                if(in_array($f, $ignoreArr)) unset($fieldArr[$k]);
             }
+            // print_r($fieldArr);
             $fds = '`'.implode('`,`', $fieldArr).'`';
         }else {
             foreach($fArr as $k=>&$f){
