@@ -143,12 +143,14 @@ class CApp extends CRoute {
     /**
     * author: cty@20120328
     *   func: load model by modelId
-    *@modelId --- string dir1/dir2/.../modelClass
+    *@modelId --- string 如果class为MUser那么modelId为user
+    *@dirs    --- string dir1/dir2/.../
     *@subApp  --- app name(sub item name)
     */
-    public function LoadModel($modelId, $subApp=null)
+    public function LoadModel($modelId, $dirs='', $subApp=null)
     {
-        $id = $modelId. '_'. $subApp;
+        $class = 'M'.ucfirst($modelId);
+        $id = $dirs.'_'.$class. '_'. $subApp;
         if(isset($this->modelArr[$id]) && is_object($this->modelArr[$id])){
             //防止重复加载以提高效率
             return $this->modelArr[$id];
@@ -160,26 +162,38 @@ class CApp extends CRoute {
         }else{
             $modelLoc  = $this->modelLoc;
         }
-        $modelFile = $modelLoc.'/'.$modelId . '.php';
+        if($dirs){
+            $dirs = trim($dirs,'/').'/';
+            $modelFile = $modelLoc.'/'.$dirs.$class . '.php';
+        }else{
+            $modelFile = $modelLoc.'/'.$class . '.php';
+        }
         if(!is_file($modelFile)) {
             $this->httpError(500, 'The model class file not exists!');
         }
         require_once($modelFile);
-        
+        if(!class_exists($class,false)) {
+            $this->httpError(500, 'The model class is not exists!');
+        }
+        /*
         if(false === strpos($modelId,'/')) {
-            if(!class_exists($modelId,false)) {
-                $this->httpError(500, 'The model class is not exists!');
-            }
-            $class = $modelId;
-        }else {
-            $dirArr = explode('/', $modelId);
-            $len    = count($dirArr);
-            $class  = $dirArr[$len-1];
             if(!class_exists($class,false)) {
                 $this->httpError(500, 'The model class is not exists!');
             }
-        }
+            // $class = $modelId;
+        }else {
+            $dirArr = explode('/', $modelId);
+            $len    = count($dirArr);
+            // $class  = $dirArr[$len-1];
+            if(!class_exists($class,false)) {
+                $this->httpError(500, 'The model class is not exists!');
+            }
+        }*/
         return $this->modelArr[$id] = new $class;
+    }
+    public function LoadApiModel($modelId, $dirs='', $subApp=null)
+    {
+        return $this->LoadModel($modelId, $dirs, 'api');
     }
 
     //database model
